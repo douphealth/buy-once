@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as MethodologyRouteImport } from './routes/methodology'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as DevicesIndexRouteImport } from './routes/devices.index'
+import { Route as DevicesSlugRouteImport } from './routes/devices.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MethodologyRoute = MethodologyRouteImport.update({
+  id: '/methodology',
+  path: '/methodology',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevicesIndexRoute = DevicesIndexRouteImport.update({
+  id: '/devices/',
+  path: '/devices/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevicesSlugRoute = DevicesSlugRouteImport.update({
+  id: '/devices/$slug',
+  path: '/devices/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
+  '/methodology': typeof MethodologyRoute
+  '/quiz': typeof QuizRoute
+  '/devices/$slug': typeof DevicesSlugRoute
+  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
+  '/methodology': typeof MethodologyRoute
+  '/quiz': typeof QuizRoute
+  '/devices/$slug': typeof DevicesSlugRoute
+  '/devices': typeof DevicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
+  '/methodology': typeof MethodologyRoute
+  '/quiz': typeof QuizRoute
+  '/devices/$slug': typeof DevicesSlugRoute
+  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/calculator'
+    | '/compare'
+    | '/methodology'
+    | '/quiz'
+    | '/devices/$slug'
+    | '/devices/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/calculator'
+    | '/compare'
+    | '/methodology'
+    | '/quiz'
+    | '/devices/$slug'
+    | '/devices'
+  id:
+    | '__root__'
+    | '/'
+    | '/calculator'
+    | '/compare'
+    | '/methodology'
+    | '/quiz'
+    | '/devices/$slug'
+    | '/devices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalculatorRoute: typeof CalculatorRoute
+  CompareRoute: typeof CompareRoute
+  MethodologyRoute: typeof MethodologyRoute
+  QuizRoute: typeof QuizRoute
+  DevicesSlugRoute: typeof DevicesSlugRoute
+  DevicesIndexRoute: typeof DevicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/methodology': {
+      id: '/methodology'
+      path: '/methodology'
+      fullPath: '/methodology'
+      preLoaderRoute: typeof MethodologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devices/': {
+      id: '/devices/'
+      path: '/devices'
+      fullPath: '/devices/'
+      preLoaderRoute: typeof DevicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devices/$slug': {
+      id: '/devices/$slug'
+      path: '/devices/$slug'
+      fullPath: '/devices/$slug'
+      preLoaderRoute: typeof DevicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalculatorRoute: CalculatorRoute,
+  CompareRoute: CompareRoute,
+  MethodologyRoute: MethodologyRoute,
+  QuizRoute: QuizRoute,
+  DevicesSlugRoute: DevicesSlugRoute,
+  DevicesIndexRoute: DevicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -5,7 +5,7 @@ import { PageHead } from "@/components/site";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/calculator")({
-  validateSearch: (s: Record<string, unknown>): { d?: string } => ({ d: typeof s.d === "string" ? s.d : undefined }),
+  validateSearch: (s: Record<string, unknown>): { d?: string | undefined } => ({ d: typeof s["d"] === "string" ? s["d"] : undefined }),
   head: () => ({
     meta: [
       { title: "Ownership cost lab — BuyOnce" },

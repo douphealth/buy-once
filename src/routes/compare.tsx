@@ -2,9 +2,9 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { devices, getDevice, name, status, usd, type Device } from "@/lib/research";
 import { StatusPill, PageHead } from "@/components/site";
 
-type S = { a?: string; b?: string };
+type S = { a?: string | undefined; b?: string | undefined };
 export const Route = createFileRoute("/compare")({
-  validateSearch: (s: Record<string, unknown>): S => ({ a: typeof s.a === "string" ? s.a : undefined, b: typeof s.b === "string" ? s.b : undefined }),
+  validateSearch: (s: Record<string, unknown>): S => ({ a: typeof s["a"] === "string" ? s["a"] : undefined, b: typeof s["b"] === "string" ? s["b"] : undefined }),
   head: () => ({
     meta: [
       { title: "Compare two devices side by side — BuyOnce" },

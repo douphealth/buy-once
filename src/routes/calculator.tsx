@@ -21,8 +21,8 @@ export const Route = createFileRoute("/calculator")({
 
 function Calc() {
   const { d: initial } = Route.useSearch();
-  const [slug, setSlug] = useState(initial ?? devices[0].slug);
-  const dev = getDevice(slug) ?? devices[0];
+  const [slug, setSlug] = useState(initial ?? devices[0]!.slug);
+  const dev = getDevice(slug) ?? devices[0]!;
   const [price, setPrice] = useState(dev.device_price_assumption_usd ?? 0);
   const [billing, setBilling] = useState<"monthly" | "annual" | "none">("annual");
   const [years, setYears] = useState(5);

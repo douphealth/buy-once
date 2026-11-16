@@ -30,7 +30,7 @@ function Quiz() {
   const [ans, setAns] = useState<number[]>([]);
   const step = ans.length;
   const pool = devices.filter((d) => d.category === "doorbell");
-  const result = pool.filter((d) => ans.every((a, i) => qs[i].opts[a].f(d)));
+  const result = pool.filter((d) => ans.every((a, i) => qs[i]!.opts[a]!.f(d)));
   return (
     <>
       <PageHead kicker="Doorbell finder · doorbells only" title="Four questions. Zero hidden scoring.">Every filter is a hard rule you can see. If nothing matches, we say so.</PageHead>
@@ -39,9 +39,9 @@ function Quiz() {
         {step < qs.length ? (
           <div key={step} className="animate-rise mt-8">
             <p className="eyebrow text-muted-foreground">Question {step + 1} / {qs.length} · {result.length} still match</p>
-            <h2 className="font-display mt-3 text-5xl">{qs[step].q}</h2>
+            <h2 className="font-display mt-3 text-5xl">{qs[step]!.q}</h2>
             <div className="mt-8 grid gap-3">
-              {qs[step].opts.map((o, i) => (
+              {qs[step]!.opts.map((o, i) => (
                 <button key={o.l} onClick={() => setAns([...ans, i])} className="border border-foreground bg-card p-5 text-left text-lg transition-all hover:translate-x-1 hover:bg-primary hover:text-primary-foreground">{o.l} →</button>
               ))}
             </div>

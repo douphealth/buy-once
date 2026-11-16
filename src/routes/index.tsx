@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 const doorbells = devices.filter((d) => d.category === "doorbell");
 
 function Index() {
-  const [slug, setSlug] = useState(doorbells[0].slug);
+  const [slug, setSlug] = useState(doorbells[0]!.slug);
   const [active, setActive] = useState(false);
   const d = doorbells.find((x) => x.slug === slug)!;
   const rows = [

@@ -21,9 +21,9 @@ export const Route = createFileRoute("/compare")({
 const fiveYear = (d: Device) => (d.device_price_assumption_usd ?? 0) + (d.plan_annual_usd ?? 0) * 5;
 
 function Compare() {
-  const { a = devices[0].slug, b = devices[3].slug } = Route.useSearch();
+  const { a = devices[0]!.slug, b = devices[3]!.slug } = Route.useSearch();
   const nav = useNavigate({ from: "/compare" });
-  const A = getDevice(a) ?? devices[0], B = getDevice(b) ?? devices[3];
+  const A = getDevice(a) ?? devices[0]!, B = getDevice(b) ?? devices[3]!;
   const pick = (k: "a" | "b") => (
     <select value={k === "a" ? A.slug : B.slug} onChange={(e) => nav({ search: (p) => ({ ...p, [k]: e.target.value }), replace: true })} className="w-full border border-foreground bg-card p-3 font-display text-2xl">
       {devices.map((d) => <option key={d.slug} value={d.slug} disabled={d.slug === (k === "a" ? B.slug : A.slug)}>{name(d)}</option>)}

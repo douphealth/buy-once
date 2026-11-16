@@ -59,7 +59,7 @@ const tone: Record<Status, string> = {
 };
 const glyph: Record<Status, string> = { yes: "●", partial: "◐", no: "○", unknown: "?" };
 
-export function StatusPill({ s, label }: { s: Status; label?: string }) {
+export function StatusPill({ s, label }: { s: Status; label?: string | undefined }) {
   return <span className={cn("eyebrow inline-flex items-center gap-1.5 px-2 py-1", tone[s])}>{glyph[s]} {label ?? statusLabel[s]}</span>;
 }
 

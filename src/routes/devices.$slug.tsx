@@ -28,7 +28,7 @@ function DevicePage() {
       <blockquote className="animate-rise mt-8 border-l-4 border-primary pl-5 text-xl">{d.without_plan}</blockquote>
 
       <div className="mt-10 grid gap-px border border-foreground bg-foreground sm:grid-cols-3">
-        {[["Recording without plan", d.without_plan_recording], ["Recording without internet", d.record_without_internet], ["Vendor independent", d.vendor_independent]].map(([k, v]) => (
+        {([["Recording without plan", d.without_plan_recording], ["Recording without internet", d.record_without_internet], ["Vendor independent", d.vendor_independent]] as [string, string][]).map(([k, v]) => (
           <div key={k} className="bg-card p-5">
             <p className="eyebrow text-muted-foreground">{k}</p>
             <div className="mt-3"><StatusPill s={v === "not applicable" ? "yes" : status(v)} label={v === "not applicable" ? "Not required" : undefined} /></div>

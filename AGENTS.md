@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Research data lives in `src/data/research.json` (also served from `public/data/`); pages read it through `src/lib/research.ts` so status mapping and cost math stay in one tested place.

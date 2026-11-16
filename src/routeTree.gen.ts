@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DevicesRouteImport } from './routes/devices'
+import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as DevicesIndexRouteImport } from './routes/devices.index'
 import { Route as DevicesSlugRouteImport } from './routes/devices.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,44 +20,69 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevicesRoute = DevicesRouteImport.update({
-  id: '/devices',
-  path: '/devices',
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevicesIndexRoute = DevicesIndexRouteImport.update({
+  id: '/devices/',
+  path: '/devices/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevicesSlugRoute = DevicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => DevicesRoute,
+  id: '/devices/$slug',
+  path: '/devices/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/devices': typeof DevicesRouteWithChildren
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
   '/devices/$slug': typeof DevicesSlugRoute
+  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/devices': typeof DevicesRouteWithChildren
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
   '/devices/$slug': typeof DevicesSlugRoute
+  '/devices': typeof DevicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/devices': typeof DevicesRouteWithChildren
+  '/calculator': typeof CalculatorRoute
+  '/compare': typeof CompareRoute
   '/devices/$slug': typeof DevicesSlugRoute
+  '/devices/': typeof DevicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/devices' | '/devices/$slug'
+  fullPaths: '/' | '/calculator' | '/compare' | '/devices/$slug' | '/devices/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/devices' | '/devices/$slug'
-  id: '__root__' | '/' | '/devices' | '/devices/$slug'
+  to: '/' | '/calculator' | '/compare' | '/devices/$slug' | '/devices'
+  id:
+    | '__root__'
+    | '/'
+    | '/calculator'
+    | '/compare'
+    | '/devices/$slug'
+    | '/devices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DevicesRoute: typeof DevicesRouteWithChildren
+  CalculatorRoute: typeof CalculatorRoute
+  CompareRoute: typeof CompareRoute
+  DevicesSlugRoute: typeof DevicesSlugRoute
+  DevicesIndexRoute: typeof DevicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -67,37 +94,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/devices': {
-      id: '/devices'
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devices/': {
+      id: '/devices/'
       path: '/devices'
-      fullPath: '/devices'
-      preLoaderRoute: typeof DevicesRouteImport
+      fullPath: '/devices/'
+      preLoaderRoute: typeof DevicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/devices/$slug': {
       id: '/devices/$slug'
-      path: '/$slug'
+      path: '/devices/$slug'
       fullPath: '/devices/$slug'
       preLoaderRoute: typeof DevicesSlugRouteImport
-      parentRoute: typeof DevicesRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface DevicesRouteChildren {
-  DevicesSlugRoute: typeof DevicesSlugRoute
-}
-
-const DevicesRouteChildren: DevicesRouteChildren = {
-  DevicesSlugRoute: DevicesSlugRoute,
-}
-
-const DevicesRouteWithChildren =
-  DevicesRoute._addFileChildren(DevicesRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DevicesRoute: DevicesRouteWithChildren,
+  CalculatorRoute: CalculatorRoute,
+  CompareRoute: CompareRoute,
+  DevicesSlugRoute: DevicesSlugRoute,
+  DevicesIndexRoute: DevicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,10 +1,10 @@
-import { createFileRoute, Outlet, Link, useMatch } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { devices, name, status, categoryLabel, usd, type Device } from "@/lib/research";
 import { StatusPill, PageHead } from "@/components/site";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/devices")({
+export const Route = createFileRoute("/devices/")({
   head: () => ({
     meta: [
       { title: "Device directory — BuyOnce" },
@@ -15,13 +15,9 @@ export const Route = createFileRoute("/devices")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: Layout,
+  component: Directory,
 });
 
-function Layout() {
-  const child = useMatch({ from: "/devices/$slug", shouldThrow: false });
-  return child ? <Outlet /> : <Directory />;
-}
 
 type Sort = "name" | "plan" | "price";
 function Directory() {

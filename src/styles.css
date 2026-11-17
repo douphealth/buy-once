@@ -39,13 +39,13 @@
 
 :root {
   --radius: 2px;
-  --background: oklch(0.96 0.012 90);
-  --foreground: oklch(0.22 0.03 230);
-  --card: oklch(0.985 0.008 90);
+  --background: oklch(0.97 0.002 160);
+  --foreground: oklch(0.22 0.008 160);
+  --card: oklch(0.995 0.002 160);
   --card-foreground: oklch(0.22 0.03 230);
   --popover: oklch(0.985 0.008 90);
   --popover-foreground: oklch(0.22 0.03 230);
-  --primary: oklch(0.52 0.22 266);
+  --primary: oklch(0.43 0.09 165);
   --primary-foreground: oklch(0.985 0.008 90);
   --secondary: oklch(0.92 0.015 90);
   --secondary-foreground: oklch(0.22 0.03 230);
@@ -57,7 +57,7 @@
   --destructive-foreground: oklch(0.985 0.008 90);
   --border: oklch(0.22 0.03 230 / 18%);
   --input: oklch(0.22 0.03 230 / 25%);
-  --ring: oklch(0.52 0.22 266);
+  --ring: oklch(0.43 0.09 165);
   --ink: oklch(0.22 0.03 230);
   --ink-foreground: oklch(0.96 0.012 90);
   --citron: oklch(0.92 0.16 120);
@@ -80,8 +80,8 @@
   ::selection { background: var(--citron); color: var(--ink); }
 }
 
-@utility font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; }
-@utility eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; }
+@utility font-display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0; }
+@utility eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0; text-transform: uppercase; }
 @utility rule { border-top: 1px solid var(--color-foreground); }
 @utility shadow-hard { box-shadow: 4px 4px 0 0 var(--color-foreground); }
 @utility shadow-hard-lg { box-shadow: 8px 8px 0 0 var(--color-foreground); }

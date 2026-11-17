@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getDevice, name, status, categoryLabel, usd, devices } from "@/lib/research";
+import { getDevice, name, categoryLabel, usd, devices, deviceFacts, extrasNote, planDescription, planPrice, estimateCost } from "@/lib/research";
 import { StatusPill } from "@/components/site";
+import { Evidence } from "@/components/evidence";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/devices/$slug")({
   loader: ({ params }) => { const d = getDevice(params.slug); if (!d) throw notFound(); return d; },
@@ -22,17 +24,19 @@ function DevicePage() {
   const peers = devices.filter((x) => x.category === d.category && x.slug !== d.slug).slice(0, 3);
   return (
     <article className="mx-auto max-w-5xl px-5 pt-12">
-      <Link to="/devices" className="eyebrow text-muted-foreground hover:text-primary">← Directory</Link>
-      <p className="eyebrow mt-8 text-primary">{categoryLabel[d.category]} · {d.market} · reviewed {d.reviewed}</p>
+      <Link to="/devices" search={{ q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" }} className="eyebrow text-muted-foreground hover:text-primary">← Directory</Link>
+      <p className="eyebrow mt-8 text-primary">{categoryLabel[d.category]} · {d.market} · imported record dated {d.reviewed}</p>
       <h1 className="font-display animate-rise mt-3 text-6xl leading-[0.95] md:text-8xl">{name(d)}</h1>
       <blockquote className="animate-rise mt-8 border-l-4 border-primary pl-5 text-xl">{d.without_plan}</blockquote>
 
+      <p className="mt-4 text-sm text-muted-foreground">Documentation summary only. Claim-level verification, supporting excerpts and a named reviewer were not supplied.</p>
       <div className="mt-10 grid gap-px border border-foreground bg-foreground sm:grid-cols-3">
-        {([["Recording without plan", d.without_plan_recording], ["Recording without internet", d.record_without_internet], ["Vendor independent", d.vendor_independent]] as [string, string][]).map(([k, v]) => (
-          <div key={k} className="bg-card p-5">
-            <p className="eyebrow text-muted-foreground">{k}</p>
-            <div className="mt-3"><StatusPill s={v === "not applicable" ? "yes" : status(v)} label={v === "not applicable" ? "Not required" : undefined} /></div>
-            {v.length > 20 && <p className="mt-2 text-sm text-muted-foreground">{v}</p>}
+        {deviceFacts(d).map((fact) => (
+          <div key={fact.key} className="bg-card p-5">
+            <p className="eyebrow text-muted-foreground">{fact.label}</p>
+            <div className="mt-3"><StatusPill s={fact.verdict} /></div>
+            <p className="mt-2 text-sm text-muted-foreground">{fact.detail}</p>
+            <Evidence device={d} fact={fact} />
           </div>
         ))}
       </div>
@@ -41,12 +45,16 @@ function DevicePage() {
         <div>
           <h2 className="font-display text-3xl">Money</h2>
           <dl className="mt-4 divide-y divide-border font-mono text-sm">
-            <Row k="Device (assumption)" v={d.device_price_assumption_usd ? usd(d.device_price_assumption_usd) : "—"} />
-            <Row k="Plan monthly" v={d.plan_monthly_usd ? `$${d.plan_monthly_usd}` : "—"} />
-            <Row k="Plan annual" v={d.plan_annual_usd ? `$${d.plan_annual_usd}` : "—"} />
+            <Row k="Device (dated / illustrative)" v={d.device_price_assumption_usd != null ? usd(d.device_price_assumption_usd) : "Price unverified"} />
+            <Row k="Paid / optional plan monthly" v={d.plan_monthly_usd ? `$${d.plan_monthly_usd}` : "Price unverified"} />
+            <Row k="Paid / optional plan annual" v={planPrice(d) !== null ? `$${planPrice(d)}` : "Price unverified"} />
+            <Row k="3-year estimated total" v={estimateCost(d) === null ? "Incomplete" : usd(Number(estimateCost(d)))} />
             <Row k="Price status" v={d.price_source_status} />
           </dl>
-          <Link to="/calculator" search={{ d: d.slug }} className="shadow-hard mt-5 inline-block bg-primary px-4 py-2 text-primary-foreground">Run 5-year cost →</Link>
+          <p className="mt-4 text-sm">{planDescription(d)}</p>
+          <p className="mt-3 text-sm text-muted-foreground">Required extras: {extrasNote(d)}</p>
+          <p className="mt-3 text-xs text-muted-foreground">US prices, not live quotes. Three-year estimates include annual membership where applicable, exclude trial, taxes and shipping, and remain incomplete when required costs are unresolved.</p>
+          <Button asChild className="mt-5"><Link to="/calculator" search={{ d: d.slug }}>Enter your own cost assumptions →</Link></Button>
         </div>
         <div>
           <h2 className="font-display text-3xl">Limitations</h2>

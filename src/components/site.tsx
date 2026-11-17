@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { type Status, statusLabel, freshness } from "@/lib/research";
 import { cn } from "@/lib/utils";
+import logoMark from "@/assets/logo-mark.png";
 
 const nav = [
   { to: "/devices", label: "Directory" },

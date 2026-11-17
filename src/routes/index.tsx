@@ -47,7 +47,7 @@ function Index() {
           </p>
           <div className="animate-rise mt-8 flex flex-wrap gap-3">
             <Link to="/quiz" className="shadow-hard bg-primary px-5 py-3 font-medium text-primary-foreground transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5">Find my doorbell →</Link>
-            <Link to="/devices" search={{}} className="border border-foreground px-5 py-3 font-medium transition-colors hover:bg-foreground hover:text-background">Browse all {research.count}</Link>
+            <Link to="/devices" search={{ q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" }} className="border border-foreground px-5 py-3 font-medium transition-colors hover:bg-foreground hover:text-background">Browse all {research.count}</Link>
           </div>
         </div>
 

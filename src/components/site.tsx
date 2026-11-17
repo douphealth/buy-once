@@ -39,7 +39,8 @@ export function Footer() {
     <footer className="mt-24 border-t border-foreground bg-ink text-ink-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-3">
         <div>
-          <p className="font-display text-4xl">BuyOnce</p>
+          <img src={logoMark} alt="BuyOnce logo" width={256} height={256} loading="lazy" className="h-12 w-12" />
+          <p className="font-display mt-3 text-4xl">BuyOnce</p>
           <p className="mt-2 max-w-xs text-sm opacity-70">Independent reading of manufacturer documentation. No device was physically tested. Terms change — always check the linked source.</p>
         </div>
         <div className="eyebrow space-y-2 opacity-80">

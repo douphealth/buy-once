@@ -21,17 +21,18 @@ export const Route = createFileRoute("/")({
 const doorbells = devices.filter((d) => d.category === "doorbell");
 
 function Index() {
-  const [slug, setSlug] = useState(doorbells[0]!.slug);
+  const [slug, setSlug] = useState(doorbells[0]?.slug ?? "");
   const [active, setActive] = useState(false);
-  const d = doorbells.find((x) => x.slug === slug)!;
+  const d = doorbells.find((x) => x.slug === slug) ?? doorbells[0];
+  if (!d) return <p className="p-5">No doorbell records available.</p>;
   const rows = [
-    { k: "Live view & answer", s: "yes" as const },
-    { k: "Motion alerts", s: "yes" as const },
+    { k: "Live view & answer", s: /live viewing|answer|live view/i.test(d.without_plan + d.limitations) ? "partial" as const : "unknown" as const },
+    { k: "Motion alerts", s: "unknown" as const },
     { k: "Recorded video history", s: active ? ("yes" as const) : status(d.without_plan_recording) },
     { k: "Records without internet", s: status(d.record_without_internet) },
     { k: "Works if maker shuts down", s: status(d.vendor_independent) },
   ];
-  const yearly = d.plan_annual_usd ?? (d.plan_monthly_usd ?? 0) * 12;
+  const yearly = d.plan_annual_usd && d.plan_annual_usd > 0 ? d.plan_annual_usd : null;
 
   return (
     <>
@@ -42,7 +43,7 @@ function Index() {
             What does it do <em className="text-primary">after</em> you stop paying?
           </h1>
           <p className="animate-rise mt-6 max-w-xl text-lg text-muted-foreground">
-            Smart devices are sold once and rented forever. We read every manufacturer's fine print so you can see, model by model, what survives a cancelled plan — with the source linked.
+            Explore supplied manufacturer-documentation summaries to see what survives a cancelled plan. Evidence gaps and conditions stay visible; no device was physically tested.
           </p>
           <div className="animate-rise mt-8 flex flex-wrap gap-3">
             <Link to="/quiz" className="shadow-hard bg-primary px-5 py-3 font-medium text-primary-foreground transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5">Find my doorbell →</Link>
@@ -70,7 +71,7 @@ function Index() {
               </li>
             ))}
           </ul>
-          <p key={slug + active} className="animate-rise mt-4 text-sm opacity-80">{active ? `Plan costs ${yearly ? usd(yearly) : "nothing"} a year.` : d.without_plan}</p>
+          <p key={slug + active} className="animate-rise mt-4 text-sm opacity-80">{active ? yearly === null ? "Paid/optional plan price unverified. Confirm included recording features with the manufacturer." : `Imported plan price: ${usd(yearly)} a year; not a live quote.` : d.without_plan}</p>
           <Link to="/devices/$slug" params={{ slug }} className="eyebrow mt-5 inline-block text-citron underline-offset-4 hover:underline">Read the full file & sources →</Link>
         </div>
       </section>
@@ -101,7 +102,7 @@ function Index() {
 
       <section className="mx-auto max-w-7xl px-5">
         <div className="grid gap-6 md:grid-cols-4">
-          {[[String(research.count), "devices researched"], ["15", "doorbells, 105 pairings"], ["0", "invented test results"], ["100%", "claims source-linked"]].map(([n, l]) => (
+          {[[String(research.count), "imported device records"], ["15", "doorbell records"], ["0", "physical tests performed"], ["21", "records with source links"]].map(([n, l]) => (
             <div key={l} className="border-t-4 border-foreground pt-4">
               <p className="font-display text-6xl">{n}</p><p className="eyebrow mt-1 text-muted-foreground">{l}</p>
             </div>

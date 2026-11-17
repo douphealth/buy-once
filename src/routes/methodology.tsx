@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHead } from "@/components/site";
-import { research } from "@/lib/research";
+import { research, freshness } from "@/lib/research";
 
 export const Route = createFileRoute("/methodology")({
   head: () => ({
@@ -17,9 +17,9 @@ export const Route = createFileRoute("/methodology")({
 });
 
 const rules = [
-  ["Model-level sources only", "Every status links to the maker's own support page, plan page or product listing for that exact model."],
-  ["Dated", `Each file carries a review date. This edition: ${research.updated}. Terms change; the link lets you verify today.`],
-  ["Unknown stays unknown", "If documentation doesn't establish a claim, it's labelled 'Not established' — never guessed green."],
+  ["Source scope", "Records include manufacturer support and product links. Some guidance is generic or from other regions. Individual claims are not yet mapped to supporting excerpts; links are not proof of a fresh verification."],
+  ["Dated records, not new checks", `Imported record dates range from ${freshness.oldest} to ${freshness.newest}. Separate claim and plan-price verification dates were not supplied. We have not rechecked all sources today.`],
+  ["Unknown stays unknown", "If the supplied documentation summary doesn't establish a claim, it is labelled 'Not verified'. Missing or unresearched prices are not treated as free."],
   ["Prices are assumptions", "Device prices are editable illustrative figures or dated official snapshots, never live quotes."],
   ["No physical testing", "We read documentation. We don't claim lab tests, measurements or long-term reliability data."],
   ["No affiliate money", "No commissions, no sponsored rankings, no tracking scripts."],
@@ -39,6 +39,17 @@ function Method() {
         ))}
       </div>
       <p className="mx-auto mt-8 max-w-7xl px-5 text-sm text-muted-foreground">Dataset licence: {research.license}</p>
+      <section className="mx-auto mt-12 max-w-7xl border-t border-border px-5 pt-8">
+        <h2 className="font-display text-3xl">Dataset field dictionary</h2>
+        <dl className="mt-5 grid gap-5 text-sm md:grid-cols-2">
+          <div><dt className="font-medium">without_plan / limitations</dt><dd className="mt-1 text-muted-foreground">Imported editorial summary and caveats, not verbatim manufacturer excerpts.</dd></div>
+          <div><dt className="font-medium">source_urls / reviewed</dt><dd className="mt-1 text-muted-foreground">Device-level source links and supplied record date; not per-claim verification.</dd></div>
+          <div><dt className="font-medium">plan_monthly_usd / plan_annual_usd</dt><dd className="mt-1 text-muted-foreground">Legacy zeros can mean an unresearched optional plan. The site treats them as unverified, not a $0 quote.</dd></div>
+          <div><dt className="font-medium">device_price_assumption_usd</dt><dd className="mt-1 text-muted-foreground">Dated or illustrative hardware price. Null means unknown. Required hardware costs are not complete.</dd></div>
+        </dl>
+        <h2 className="font-display mt-10 text-3xl">Editorial status</h2>
+        <p className="mt-3 max-w-3xl text-sm text-muted-foreground">This revision corrects display terminology, wearable attributes, camera recording sentinels and incomplete cost estimates. The downloaded source records remain unchanged. A named editorial owner, public corrections intake, licensed product photography and claim-by-claim source checks have not yet been provided; this is not a certified launch-ready research collection.</p>
+      </section>
     </>
   );
 }

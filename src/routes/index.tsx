@@ -30,7 +30,9 @@ function Index() {
   const root = useRef<HTMLDivElement>(null);
   const [slug, setSlug] = useState(doorbells[0]?.slug ?? "");
   const [active, setActive] = useState(false);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
+    setReady(true);
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); }
     }), { threshold: 0.12 });
@@ -47,7 +49,7 @@ function Index() {
     { k: "Works if maker shuts down", s: status(d.vendor_independent) },
   ];
   const yearly = d.plan_annual_usd && d.plan_annual_usd > 0 ? d.plan_annual_usd : null;
-  return <div ref={root} className="ownership-home">
+  return <div ref={root} className="ownership-home" data-ready={ready}>
     <section className="home-hero relative isolate overflow-hidden bg-home-stage">
       <img src={heroImage} alt="Illustrative unbranded video doorbell, security camera and titanium smart ring" width={1920} height={1088} fetchPriority="high" className="home-hero-image absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="home-hero-inner relative mx-auto flex max-w-7xl flex-col justify-center px-5">

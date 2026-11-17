@@ -127,11 +127,15 @@
   .home-hero-title { font-size: 46px; }
 }
 @media (max-width: 767px) {
-  .home-hero-inner { min-height: 790px; justify-content: flex-start; padding-top: 35px; padding-bottom: 320px; }
-  .home-hero-image { top: auto; height: 340px; object-position: right bottom; object-fit: cover; }
+  .home-hero-inner { min-height: 700px; justify-content: flex-start; padding-top: 26px; padding-bottom: 250px; }
+  .home-hero-image { top: auto; height: 270px; object-position: right bottom; object-fit: cover; }
   .home-wordmark { font-size: 76px; }
   .home-hero-title { font-size: 40px; }
   .home-hero-inner > .eyebrow { max-width: 290px; font-size: 9px; }
+  .home-hero-inner > .mt-7 { margin-top: 20px; }
+  .home-hero-inner > .mt-5 { margin-top: 14px; }
+  .home-hero-inner > div.flex.flex-wrap { gap: 8px; }
+  .home-hero-inner > div.flex.flex-wrap a { padding-inline: 12px; font-size: 12px; }
   .home-scroll { display: none; }
   .home-image-label { bottom: 12px; right: 12px; }
   .home-image-label .eyebrow { font-size: 8px; }

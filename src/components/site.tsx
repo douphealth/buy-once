@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { type Status, statusLabel } from "@/lib/research";
+import { type Status, statusLabel, freshness } from "@/lib/research";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -13,12 +13,12 @@ const nav = [
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-foreground bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-3">
         <Link to="/" className="flex items-baseline gap-2">
           <span className="font-display text-3xl leading-none">BuyOnce</span>
           <span className="eyebrow hidden text-muted-foreground sm:inline">Ownership Desk · Ed.04</span>
         </Link>
-        <nav className="flex gap-1 overflow-x-auto text-sm">
+        <nav aria-label="Main navigation" className="flex max-w-full gap-1 overflow-x-auto text-sm">
           {nav.map((n) => (
             <Link key={n.to} to={n.to} className="px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
               {n.label}
@@ -39,7 +39,7 @@ export function Footer() {
           <p className="mt-2 max-w-xs text-sm opacity-70">Independent reading of manufacturer documentation. No device was physically tested. Terms change — always check the linked source.</p>
         </div>
         <div className="eyebrow space-y-2 opacity-80">
-          <p>US research edition</p><p>Reviewed 1 Nov 2026</p><p>No affiliate links · No tracking</p>
+          <p>US research edition</p><p>Record dates: {freshness.oldest} – {freshness.newest}</p><p>Claim-level verification pending</p><p>No affiliate links · No tracking</p>
         </div>
         <div className="flex flex-col gap-2 text-sm">
           <a className="underline-offset-4 hover:underline" href="/data/buyonce-research.json" download>Download JSON dataset</a>
@@ -60,7 +60,7 @@ const tone: Record<Status, string> = {
 const glyph: Record<Status, string> = { yes: "●", partial: "◐", no: "○", unknown: "?" };
 
 export function StatusPill({ s, label }: { s: Status; label?: string | undefined }) {
-  return <span className={cn("eyebrow inline-flex items-center gap-1.5 px-2 py-1", tone[s])}>{glyph[s]} {label ?? statusLabel[s]}</span>;
+  return <span className={cn("inline-flex items-center gap-1.5 px-2 py-1 text-xs", tone[s])}><span aria-hidden="true">{glyph[s]}</span>{label ? `${label}: ` : ""}{statusLabel[s]}</span>;
 }
 
 export function PageHead({ kicker, title, children }: { kicker: string; title: string; children?: React.ReactNode }) {

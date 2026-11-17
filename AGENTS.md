@@ -30,3 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Research data lives in `src/data/research.json` (also served from `public/data/`); pages read it through `src/lib/research.ts` so status mapping and cost math stay in one tested place.
+- Derive category facts, legacy-price uncertainty and directory filters in the research helper; imported summaries must never be presented as source excerpts or claim-level verification.
+- Directory state belongs in validated URL search parameters; compare selections are restricted to one category so shared links reproduce buying decisions.

@@ -3,6 +3,7 @@ import { getDevice, name, categoryLabel, usd, devices, deviceFacts, extrasNote, 
 import { StatusPill } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
+import { DeviceInsights } from "@/components/DeviceInsights";
 
 export const Route = createFileRoute("/devices/$slug")({
   loader: ({ params }) => { const d = getDevice(params.slug); if (!d) throw notFound(); return d; },
@@ -65,6 +66,8 @@ function DevicePage() {
           </ol>
         </div>
       </div>
+
+      <DeviceInsights d={d} />
 
       {peers.length > 0 && (
         <section className="mt-16 border-t border-foreground pt-8">

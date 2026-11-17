@@ -1,18 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHead } from "@/components/site";
 import { research, freshness } from "@/lib/research";
+import { directorySearchDefaults, methodologyHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/methodology")({
-  head: () => ({
-    meta: [
-      { title: "Methodology — how BuyOnce researches devices" },
-      { name: "description", content: "Documentation research, not lab testing. How we source, date and label every claim — and what we deliberately don't claim." },
-      { property: "og:title", content: "BuyOnce methodology" },
-      { property: "og:description", content: "Source-linked, dated, and honest about what's unknown." },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  head: () => methodologyHead() as never,
   component: Method,
 });
 
@@ -28,7 +20,7 @@ const rules = [
 function Method() {
   return (
     <>
-      <PageHead kicker="Methodology" title="Credible because it admits what it doesn't know." />
+      <PageHead crumbs={[{ label: "Home", href: "/" }, { label: "Methodology" }]} kicker="Methodology" title="Credible because it admits what it doesn't know.">Documentation research, not lab testing. Records are dated and source-linked, and stay unverified when a claim is not established.</PageHead>
       <div className="mx-auto grid max-w-7xl gap-px border border-foreground bg-foreground px-0 md:grid-cols-2 lg:grid-cols-3">
         {rules.map(([t, b], i) => (
           <div key={t} className="bg-background p-8">
@@ -38,7 +30,7 @@ function Method() {
           </div>
         ))}
       </div>
-      <p className="mx-auto mt-8 max-w-7xl px-5 text-sm text-muted-foreground">Dataset licence: {research.license}</p>
+      <p className="mx-auto mt-8 max-w-7xl px-5 text-sm text-muted-foreground">Dataset licence: {research.license} <Link to="/devices" search={directorySearchDefaults} className="text-primary underline-offset-4 hover:underline">Browse the device directory</Link>.</p>
       <section className="mx-auto mt-12 max-w-7xl border-t border-border px-5 pt-8">
         <h2 className="font-display text-3xl">Dataset field dictionary</h2>
         <dl className="mt-5 grid gap-5 text-sm md:grid-cols-2">

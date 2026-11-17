@@ -2,24 +2,19 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Camera, Circle, CreditCard, Fingerprint, Radio, ShieldCheck, WifiOff } from "lucide-react";
 import { devices, name, status, research, usd } from "@/lib/research";
+import { directorySearchDefaults, homeHead } from "@/lib/seo";
 import { StatusPill } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import heroImage from "@/assets/ownership-still-life.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [
-    { title: "BuyOnce — Smart devices. Real ownership." },
-    { name: "description", content: "Explore source-linked research on 21 doorbells, cameras and smart rings. See what survives a cancelled subscription, with evidence gaps clearly marked." },
-    { property: "og:title", content: "BuyOnce — Smart devices. Real ownership." },
-    { property: "og:description", content: "What does your device do after you stop paying? Explore the Ownership Desk." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }), component: Index,
+  head: () => homeHead() as never,
+  component: Index,
 });
 
 const doorbells = devices.filter(d => d.category === "doorbell");
-const directorySearch = { q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" } as const;
+const directorySearch = directorySearchDefaults;
 const principles = [
   { n: "01", title: "No plan.", subtitle: "Still your device?", Icon: CreditCard, copy: "Recording, history, smart alerts. What remains when the subscription ends — and what disappears." },
   { n: "02", title: "No internet.", subtitle: "Still recording?", Icon: WifiOff, copy: "Local storage isn't the whole story. We separate offline recording from simply having an SD card." },
@@ -54,9 +49,10 @@ function Index() {
       <img src={heroImage} alt="Illustrative unbranded video doorbell, security camera and titanium smart ring" width={1920} height={1088} fetchPriority="high" className="home-hero-image absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="home-hero-inner relative mx-auto flex max-w-7xl flex-col justify-center px-5">
         <p className="eyebrow animate-rise flex items-center gap-2 text-primary"><span className="home-live-dot" /> Independent ownership research · Edition 04</p>
-        <h1 className="home-wordmark font-display animate-rise mt-5">BuyOnce<span className="text-primary">.</span></h1>
-        <p className="home-hero-title font-display animate-rise mt-3">Smart devices.<br /> <em className="text-primary">Real ownership.</em></p>
+        <p className="home-wordmark font-display animate-rise mt-5">BuyOnce<span className="text-primary">.</span></p>
+        <h1 className="home-hero-title font-display animate-rise mt-3">Smart devices.<br /> <em className="text-primary">Real ownership.</em></h1>
         <p className="animate-rise mt-5 max-w-sm text-base leading-relaxed text-home-subtle">What does it do <span className="font-medium text-foreground">after you stop paying?</span><br />Find out before you buy in.</p>
+        <p className="animate-rise mt-3 max-w-sm text-sm leading-relaxed text-home-subtle">{research.count} doorbell, camera and smart-ring records state what manufacturer documentation still supports after a plan ends, and what is still unverified.</p>
         <div className="animate-rise mt-7 flex flex-wrap gap-3">
           <Button asChild size="lg" className="h-12 px-5"><Link to="/devices" search={directorySearch}>Explore the directory <ArrowUpRight /></Link></Button>
           <Button asChild variant="outline" size="lg" className="h-12 border-foreground/30 bg-transparent px-5"><Link to="/quiz">Find my doorbell <ArrowRight /></Link></Button>

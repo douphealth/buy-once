@@ -15,9 +15,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-foreground bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-3">
-        <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display text-3xl leading-none">BuyOnce</span>
-          <span className="eyebrow hidden text-muted-foreground sm:inline">Ownership Desk · Ed.04</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src={logoMark} alt="BuyOnce logo" width={256} height={256} className="h-9 w-9 shadow-hard" />
+          <span className="flex items-baseline gap-2">
+            <span className="font-display text-3xl leading-none">BuyOnce</span>
+            <span className="eyebrow hidden text-muted-foreground sm:inline">Ownership Desk · Ed.04</span>
+          </span>
         </Link>
         <nav aria-label="Main navigation" className="flex max-w-full gap-1 overflow-x-auto text-sm">
           {nav.map((n) => (

@@ -1,22 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { devices, getDevice, name, ownershipCost, usd, planPrice, extrasNote } from "@/lib/research";
+import { calculatorHead } from "@/lib/seo";
 import { PageHead } from "@/components/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/calculator")({
-  validateSearch: (s: Record<string, unknown>): { d?: string | undefined } => ({ d: typeof s["d"] === "string" ? s["d"] : undefined }),
-  head: () => ({
-    meta: [
-      { title: "Ownership cost lab — BuyOnce" },
-      { name: "description", content: "Calculate the true multi-year cost of a smart doorbell, camera or ring including subscriptions, trials and accessories." },
-      { property: "og:title", content: "Ownership cost lab — BuyOnce" },
-      { property: "og:description", content: "The sticker price is the down payment. See the real total." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  validateSearch: (s: Record<string, unknown>): { d?: string | undefined } => ({ d: typeof s["d"] === "string" && s["d"].trim() ? s["d"] : undefined }),
+  head: ({ match }) => calculatorHead(match.search.d) as never,
   component: Calc,
 });
 
@@ -44,7 +36,7 @@ function Calc() {
 
   return (
     <>
-      <PageHead kicker="Cost lab" title="The sticker price is just the down payment." />
+      <PageHead crumbs={[{ label: "Home", href: "/" }, { label: "Cost lab" }]} kicker="Cost lab" title="The sticker price is just the down payment.">Estimate a multi-year total from a device price, plan, trial months and extras. The total stays hidden until those assumptions are confirmed.</PageHead>
       <div className="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[380px_1fr]">
         <div className="space-y-5 border border-foreground bg-card p-6">
           <Field label="Device"><select value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full border border-input bg-background p-2">{devices.map((d) => <option key={d.slug} value={d.slug}>{name(d)}</option>)}</select></Field>

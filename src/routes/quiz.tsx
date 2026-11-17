@@ -2,19 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { devices, name, status, usd, type Device, subscriptionFree, planPrice } from "@/lib/research";
 import { PageHead, StatusPill } from "@/components/site";
+import { quizHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/quiz")({
-  head: () => ({
-    meta: [
-      { title: "Doorbell finder quiz — BuyOnce" },
-      { name: "description", content: "Four questions, transparent hard filters, no hidden ranking. Find doorbells that match how you want to own them." },
-      { property: "og:title", content: "Doorbell finder — BuyOnce" },
-      { property: "og:description", content: "Four honest questions to find a doorbell you won't have to rent." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  head: () => quizHead() as never,
   component: Quiz,
 });
 
@@ -34,7 +26,7 @@ function Quiz() {
   const current = qs[step];
   return (
     <>
-      <PageHead kicker="Doorbell finder · doorbells only" title="Four questions. Zero hidden scoring.">Every filter is a hard rule you can see. If nothing matches, we say so.</PageHead>
+      <PageHead crumbs={[{ label: "Home", href: "/" }, { label: "Doorbell finder" }]} kicker="Doorbell finder · doorbells only" title="Four questions. Zero hidden scoring.">Every filter is a hard rule you can see. If nothing matches, we say so.</PageHead>
       <div className="mx-auto max-w-3xl px-5">
         <div className="flex gap-1">{qs.map((_, i) => <div key={i} className={cn("h-1.5 flex-1 transition-colors", i < step ? "bg-primary" : "bg-muted")} />)}</div>
         {current ? (

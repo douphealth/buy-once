@@ -12,7 +12,7 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
     console.error(error);
     return new Response(renderErrorPage(), {
       status: 500,
-      headers: { "content-type": "text/html; charset=utf-8" },
+      headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex" },
     });
   }
 });
@@ -24,6 +24,24 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
 
+const notFoundRobotsMiddleware = createMiddleware().server(async ({ next }) => {
+  const result = await next();
+  if (result instanceof Response) return withNoindex(result);
+  return { ...result, response: withNoindex(result.response) };
+});
+
+function withNoindex(response: Response): Response {
+  if ((response.status !== 404 && response.status < 500) || response.headers.get("x-robots-tag"))
+    return response;
+  const headers = new Headers(response.headers);
+  headers.set("x-robots-tag", "noindex");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 // requestMiddleware runs on every request; functionMiddleware only on server functions, where
 // client sendContext is unvalidated input. Append to these arrays, never replace them.
 // Enabling Lovable Cloud adds functionMiddleware: [attachSupabaseAuth], the bearer token that
@@ -31,5 +49,5 @@ const csrfMiddleware = createCsrfMiddleware({
 // user-managed Supabase project is connected, no middleware here sets Authorization, and the
 // project did not intentionally replace it.
 export const startInstance = createStart(() => ({
-  requestMiddleware: [errorMiddleware, csrfMiddleware],
+  requestMiddleware: [errorMiddleware, csrfMiddleware, notFoundRobotsMiddleware],
 }));

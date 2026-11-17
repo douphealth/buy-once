@@ -1,21 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getDevice, name, categoryLabel, usd, devices, deviceFacts, extrasNote, planDescription, planPrice, estimateCost } from "@/lib/research";
-import { StatusPill } from "@/components/site";
+import { deviceHead } from "@/lib/seo";
+import { Breadcrumbs, StatusPill } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/devices/$slug")({
   loader: ({ params }) => { const d = getDevice(params.slug); if (!d) throw notFound(); return d; },
-  head: ({ loaderData: d }) => d ? ({
-    meta: [
-      { title: `${name(d)} without a subscription — BuyOnce` },
-      { name: "description", content: d.without_plan.slice(0, 155) },
-      { property: "og:title", content: `${name(d)}: what works without a plan` },
-      { property: "og:description", content: d.without_plan.slice(0, 155) },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }) : { meta: [{ title: "Unavailable — BuyOnce" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData }) => deviceHead(loaderData) as never,
   component: DevicePage,
 });
 
@@ -24,12 +16,12 @@ function DevicePage() {
   const peers = devices.filter((x) => x.category === d.category && x.slug !== d.slug).slice(0, 3);
   return (
     <article className="mx-auto max-w-5xl px-5 pt-12">
-      <Link to="/devices" search={{ q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" }} className="eyebrow text-muted-foreground hover:text-primary">← Directory</Link>
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Directory", href: "/devices" }, { label: name(d) }]} />
       <p className="eyebrow mt-8 text-primary">{categoryLabel[d.category]} · {d.market} · imported record dated {d.reviewed}</p>
       <h1 className="font-display animate-rise mt-3 text-6xl leading-[0.95] md:text-8xl">{name(d)}</h1>
       <blockquote className="animate-rise mt-8 border-l-4 border-primary pl-5 text-xl">{d.without_plan}</blockquote>
 
-      <p className="mt-4 text-sm text-muted-foreground">Documentation summary only. Claim-level verification, supporting excerpts and a named reviewer were not supplied.</p>
+      <p className="mt-4 text-sm text-muted-foreground">Documentation summary only. Claim-level verification, supporting excerpts and a named reviewer were not supplied. <Link to="/methodology" className="text-primary underline-offset-4 hover:underline">How records are sourced</Link>.</p>
       <div className="mt-10 grid gap-px border border-foreground bg-foreground sm:grid-cols-3">
         {deviceFacts(d).map((fact) => (
           <div key={fact.key} className="bg-card p-5">
@@ -68,10 +60,15 @@ function DevicePage() {
 
       {peers.length > 0 && (
         <section className="mt-16 border-t border-foreground pt-8">
-          <p className="eyebrow">Compare with</p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            {peers.map((p) => <Link key={p.slug} to="/compare" search={{ a: d.slug, b: p.slug }} className="border border-foreground px-4 py-2 hover:bg-foreground hover:text-background">vs {name(p)}</Link>)}
-          </div>
+          <h2 className="font-display text-3xl">Related records</h2>
+          <ul className="mt-4 space-y-3">
+            {peers.map((p) => (
+              <li key={p.slug} className="flex flex-wrap items-center gap-3">
+                <Link to="/devices/$slug" params={{ slug: p.slug }} className="text-primary underline-offset-4 hover:underline">{name(p)}</Link>
+                <Link to="/compare" search={{ a: d.slug, b: p.slug }} className="border border-foreground px-4 py-2 hover:bg-foreground hover:text-background">Compare</Link>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </article>

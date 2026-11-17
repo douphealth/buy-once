@@ -1,7 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Grid2X2, List, SlidersHorizontal, X, Plus, Check, ImageOff } from "lucide-react";
 import { devices, name, categoryLabel, usd, type Device, type DirectoryFilters, parseDirectoryFilters, filterDevices, deviceFacts, extrasNote, planDescription, planPrice, estimateCost, freshness } from "@/lib/research";
+import { directoryHead, directorySearchDefaults } from "@/lib/seo";
 import { StatusPill, PageHead } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
@@ -9,13 +10,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 
 export const Route = createFileRoute("/devices/")({
   validateSearch: parseDirectoryFilters,
-  head: () => ({ meta: [
-    { title: "Smart device ownership directory — BuyOnce" },
-    { name: "description", content: "Compare subscription requirements, local storage and ownership costs for 21 devices, with manufacturer links and explicit evidence gaps." },
-    { property: "og:title", content: "Smart device ownership directory — BuyOnce" },
-    { property: "og:description", content: "What still works when you stop paying? Category-specific facts, costs and documentation records." },
-    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
-  ] }),
+  search: { middlewares: [stripSearchParams(directorySearchDefaults)] },
+  head: ({ match }) => directoryHead(match.search) as never,
   component: Directory,
 });
 
@@ -40,7 +36,7 @@ function Directory() {
   </div>;
   const active = [f.q && { label: `Search: ${f.q}`, clear: () => update({ q: "" }) }, f.cat !== "all" && { label: categoryLabel[f.cat], clear: () => update({ cat: "all" }) }, f.free && { label: "Without subscription", clear: () => update({ free: false }) }, f.offline && { label: "Offline recording", clear: () => update({ offline: false }) }, f.budget !== undefined && { label: `Budget: ${usd(f.budget)}`, clear: () => update({ budget: undefined }) }].filter(x => !!x);
   return <>
-    <PageHead kicker={`Ownership directory · ${devices.length} records`} title="What still works when you stop paying?">Compare subscription requirements, local storage, and ownership costs—with manufacturer sources.</PageHead>
+    <PageHead crumbs={[{ label: "Home", href: "/" }, { label: "Directory" }]} kicker={`Ownership directory · ${devices.length} records`} title="What still works when you stop paying?">Compare subscription requirements, local storage, and ownership costs—with manufacturer sources.</PageHead>
     <div data-directory-ready={ready} className="mx-auto max-w-7xl px-5 pb-12">
       <div className="flex flex-wrap gap-x-8 gap-y-2 border-b border-border pb-5 text-xs text-muted-foreground"><span>United States · USD only</span><span>Record dates {freshness.oldest} – {freshness.newest}</span><span>No physical testing · Claim verification pending</span></div>
       <div className="flex flex-wrap items-center gap-3 py-5">

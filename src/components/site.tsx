@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { type Status, statusLabel, freshness } from "@/lib/research";
+import { directorySearchDefaults } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import logoMark from "@/assets/logo-mark.png";
 
@@ -23,11 +24,17 @@ export function Header() {
           </span>
         </Link>
         <nav aria-label="Main navigation" className="flex max-w-full gap-1 overflow-x-auto text-sm">
-          {nav.map((n) => (
-            <Link key={n.to} to={n.to} search={{ q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" }} className="shrink-0 whitespace-nowrap px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
-              {n.label}
-            </Link>
-          ))}
+          {nav.map((n) =>
+            n.to === "/devices" ? (
+              <Link key={n.to} to="/devices" search={directorySearchDefaults} className="shrink-0 whitespace-nowrap px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
+                {n.label}
+              </Link>
+            ) : (
+              <Link key={n.to} to={n.to} className="shrink-0 whitespace-nowrap px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
+                {n.label}
+              </Link>
+            ),
+          )}
         </nav>
       </div>
     </header>
@@ -68,9 +75,43 @@ export function StatusPill({ s, label }: { s: Status; label?: string | undefined
   return <span className={cn("inline-flex items-center gap-1.5 px-2 py-1 text-xs", tone[s])}><span aria-hidden="true">{glyph[s]}</span>{label ? `${label}: ` : ""}{statusLabel[s]}</span>;
 }
 
-export function PageHead({ kicker, title, children }: { kicker: string; title: string; children?: React.ReactNode }) {
+export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
+  return (
+    <nav aria-label="Breadcrumb" className="mb-6">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+        {items.map((item, index) => {
+          const last = index === items.length - 1;
+          return (
+            <li key={`${item.label}-${index}`} className="flex items-center gap-2">
+              {index > 0 ? <span aria-hidden="true">/</span> : null}
+              {last || !item.href ? (
+                <span aria-current={last ? "page" : undefined} className={last ? "text-foreground" : undefined}>{item.label}</span>
+              ) : (
+                <CrumbLink href={item.href}>{item.label}</CrumbLink>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+function CrumbLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const className = "underline-offset-4 hover:text-primary hover:underline";
+  if (href === "/") return <Link to="/" className={className}>{children}</Link>;
+  if (href === "/devices") return <Link to="/devices" search={directorySearchDefaults} className={className}>{children}</Link>;
+  if (href === "/methodology") return <Link to="/methodology" className={className}>{children}</Link>;
+  if (href === "/quiz") return <Link to="/quiz" className={className}>{children}</Link>;
+  if (href === "/calculator") return <Link to="/calculator" className={className}>{children}</Link>;
+  if (href === "/compare") return <Link to="/compare" className={className}>{children}</Link>;
+  return <a href={href} className={className}>{children}</a>;
+}
+
+export function PageHead({ kicker, title, crumbs, children }: { kicker: string; title: string; crumbs?: { label: string; href?: string }[]; children?: React.ReactNode }) {
   return (
     <section className="mx-auto max-w-7xl px-5 pt-14 pb-8">
+      {crumbs && crumbs.length > 0 ? <Breadcrumbs items={crumbs} /> : null}
       <p className="eyebrow animate-rise text-primary">{kicker}</p>
       <h1 className="font-display animate-rise mt-3 max-w-4xl text-5xl leading-[0.95] md:text-7xl">{title}</h1>
       {children && <div className="animate-rise mt-5 max-w-2xl text-lg text-muted-foreground">{children}</div>}

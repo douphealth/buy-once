@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid2X2, List, SlidersHorizontal, X, Plus, Check, ImageOff } from "lucide-react";
 import { devices, name, categoryLabel, usd, type Device, type DirectoryFilters, parseDirectoryFilters, filterDevices, deviceFacts, extrasNote, planDescription, planPrice, estimateCost, freshness } from "@/lib/research";
 import { StatusPill, PageHead } from "@/components/site";
@@ -24,6 +24,8 @@ function Directory() {
   const navigate = useNavigate({ from: "/devices/" });
   const [selected, setSelected] = useState<string[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
   const list = filterDevices(f);
   const update = (patch: Partial<DirectoryFilters>) => { void navigate({ search: prev => ({ ...prev, ...patch }), replace: true }); };
   const reset = () => { void navigate({ search: parseDirectoryFilters({}), replace: true }); };
@@ -39,7 +41,7 @@ function Directory() {
   const active = [f.q && { label: `Search: ${f.q}`, clear: () => update({ q: "" }) }, f.cat !== "all" && { label: categoryLabel[f.cat], clear: () => update({ cat: "all" }) }, f.free && { label: "Without subscription", clear: () => update({ free: false }) }, f.offline && { label: "Offline recording", clear: () => update({ offline: false }) }, f.budget !== undefined && { label: `Budget: ${usd(f.budget)}`, clear: () => update({ budget: undefined }) }].filter(x => !!x);
   return <>
     <PageHead kicker={`Ownership directory · ${devices.length} records`} title="What still works when you stop paying?">Compare subscription requirements, local storage, and ownership costs—with manufacturer sources.</PageHead>
-    <div className="mx-auto max-w-7xl px-5 pb-12">
+    <div data-directory-ready={ready} className="mx-auto max-w-7xl px-5 pb-12">
       <div className="flex flex-wrap gap-x-8 gap-y-2 border-b border-border pb-5 text-xs text-muted-foreground"><span>United States · USD only</span><span>Record dates {freshness.oldest} – {freshness.newest}</span><span>No physical testing · Claim verification pending</span></div>
       <div className="flex flex-wrap items-center gap-3 py-5">
         <input aria-label="Search brand or model" value={f.q} onChange={e => update({ q: e.target.value })} placeholder="Search brand or exact model…" className="min-w-0 basis-full border border-input bg-card p-3 sm:flex-1 sm:basis-auto" />

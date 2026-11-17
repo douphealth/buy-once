@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, stripSearchParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Grid2X2, List, SlidersHorizontal, X, Plus, Check, ImageOff } from "lucide-react";
 import { devices, name, categoryLabel, usd, type Device, type DirectoryFilters, parseDirectoryFilters, filterDevices, deviceFacts, extrasNote, planDescription, planPrice, estimateCost, freshness } from "@/lib/research";
@@ -9,6 +9,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 
 export const Route = createFileRoute("/devices/")({
   validateSearch: parseDirectoryFilters,
+  // Default filters stay out of the URL so /devices answers 200 at its canonical address.
+  search: { middlewares: [stripSearchParams({ q: "", cat: "all", free: false, offline: false, sort: "name", view: "grid" })] },
   head: () => ({ meta: [
     { title: "Smart device ownership directory — BuyOnce" },
     { name: "description", content: "Compare subscription requirements, local storage and ownership costs for 21 devices, with manufacturer links and explicit evidence gaps." },

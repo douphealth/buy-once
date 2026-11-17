@@ -35,6 +35,8 @@
   --color-citron: var(--citron);
   --color-warn: var(--warn);
   --color-caution: var(--caution);
+  --color-home-stage: var(--home-stage);
+  --color-home-subtle: var(--home-subtle);
 }
 
 :root {
@@ -64,6 +66,8 @@
   --warn: oklch(0.65 0.17 33);
   --caution: oklch(0.82 0.13 80);
   --grid-line: oklch(0.22 0.03 230 / 6%);
+  --home-stage: oklch(0.82 0.002 160);
+  --home-subtle: oklch(0.37 0.012 160);
 }
 
 @layer base {
@@ -90,6 +94,48 @@
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @utility animate-rise { animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 @utility animate-marquee { animation: marquee 40s linear infinite; }
+
+.ownership-home { background: var(--background); }
+.home-hero-inner { min-height: 670px; padding-bottom: 60px; }
+.home-wordmark { font-size: 112px; line-height: 0.95; }
+.home-hero-title { font-size: 54px; line-height: 1.05; }
+.home-hero-image { animation: home-image-enter 1.5s ease-out both; object-position: center; }
+.home-object-tag-one { right: 10%; top: 14%; animation: home-tag-float 6s ease-in-out infinite; }
+.home-live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: home-breathe 3s ease-in-out infinite; }
+.home-scroll svg { animation: home-scroll-drift 2s ease-in-out infinite; }
+.home-reveal { animation: rise 0.7s ease-out both; }
+@supports (animation-timeline: view()) {
+  .home-reveal { animation: home-scroll-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 22%; }
+}
+.home-principle::before { content: ""; position: absolute; top: -1px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.5s ease; }
+.home-principle:hover::before { width: 100%; }
+.home-marquee:hover .animate-marquee { animation-play-state: paused; }
+.home-simulator { box-shadow: 0 18px 50px -28px var(--ink); }
+@keyframes home-image-enter { from { opacity: 0; transform: scale(1.035); } to { opacity: 1; transform: scale(1); } }
+@keyframes home-tag-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes home-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes home-scroll-drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@keyframes home-scroll-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@media (min-width: 1536px) {
+  .home-hero-image { object-position: center 58%; }
+  .home-hero-inner { min-height: 720px; }
+}
+@media (max-width: 1023px) {
+  .home-hero-image { object-position: 58% center; }
+  .home-hero-inner { min-height: 640px; }
+  .home-wordmark { font-size: 90px; }
+  .home-hero-title { font-size: 46px; }
+}
+@media (max-width: 767px) {
+  .home-hero-inner { min-height: 790px; justify-content: flex-start; padding-top: 35px; padding-bottom: 320px; }
+  .home-hero-image { top: auto; height: 340px; object-position: right bottom; object-fit: cover; }
+  .home-wordmark { font-size: 76px; }
+  .home-hero-title { font-size: 40px; }
+  .home-hero-inner > .eyebrow { max-width: 290px; font-size: 9px; }
+  .home-scroll { display: none; }
+  .home-image-label { bottom: 12px; right: 12px; }
+  .home-image-label .eyebrow { font-size: 8px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

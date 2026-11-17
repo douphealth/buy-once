@@ -1,4 +1,5 @@
 # Audit priorities
+- [ ] Redesign and verify the homepage with category imagery, animated details and an engaging simulator.
 - [x] Correct category terminology, unknown pricing, and evidence boundaries.
 - [x] Add decision-ready cards, URL filters, table view, and same-category compare tray.
 - [x] Validate cost rules and desktop/mobile directory-to-evidence-to-compare flow (16 tests pass).

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { type Status, statusLabel, freshness } from "@/lib/research";
 import { cn } from "@/lib/utils";
+import logoMark from "@/assets/logo-mark.png";
 
 const nav = [
   { to: "/devices", label: "Directory" },
@@ -14,9 +15,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-foreground bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-3">
-        <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display text-3xl leading-none">BuyOnce</span>
-          <span className="eyebrow hidden text-muted-foreground sm:inline">Ownership Desk · Ed.04</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src={logoMark} alt="BuyOnce logo" width={256} height={256} className="h-9 w-9 shadow-hard" />
+          <span className="flex items-baseline gap-2">
+            <span className="font-display text-3xl leading-none">BuyOnce</span>
+            <span className="eyebrow hidden text-muted-foreground sm:inline">Ownership Desk · Ed.04</span>
+          </span>
         </Link>
         <nav aria-label="Main navigation" className="flex max-w-full gap-1 overflow-x-auto text-sm">
           {nav.map((n) => (
@@ -35,7 +39,8 @@ export function Footer() {
     <footer className="mt-24 border-t border-foreground bg-ink text-ink-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-3">
         <div>
-          <p className="font-display text-4xl">BuyOnce</p>
+          <img src={logoMark} alt="BuyOnce logo" width={256} height={256} loading="lazy" className="h-12 w-12" />
+          <p className="font-display mt-3 text-4xl">BuyOnce</p>
           <p className="mt-2 max-w-xs text-sm opacity-70">Independent reading of manufacturer documentation. No device was physically tested. Terms change — always check the linked source.</p>
         </div>
         <div className="eyebrow space-y-2 opacity-80">

@@ -5,9 +5,9 @@ import { StatusPill, PageHead } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
 
-type S = { a?: string; b?: string };
+type S = { a?: string | undefined; b?: string | undefined };
 export const Route = createFileRoute("/compare")({
-  validateSearch: (s: Record<string, unknown>): S => ({ a: typeof s.a === "string" ? s.a : undefined, b: typeof s.b === "string" ? s.b : undefined }),
+  validateSearch: (s: Record<string, unknown>): S => ({ a: typeof s["a"] === "string" ? s["a"] : undefined, b: typeof s["b"] === "string" ? s["b"] : undefined }),
   head: () => ({ meta: [
     { title: "Same-category ownership comparisons — BuyOnce" }, { name: "description", content: "Compare two doorbells, cameras or smart rings with differences first, evidence gaps and honest three-year estimates." },
     { property: "og:title", content: "Compare ownership, not just specifications — BuyOnce" }, { property: "og:description", content: "Same-category comparisons with visible conditions, manufacturer links and explicit unknown prices." },
@@ -40,6 +40,6 @@ function Compare() {
       {requestedB && requestedB.category !== A.category && <p role="status" className="mt-4 border-l-2 border-primary pl-3 text-sm">Your link mixed categories. Showing a {categoryLabel[A.category].toLowerCase()} peer instead.</p>}
       <div className="my-6 flex flex-wrap items-center justify-between gap-3"><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={differences} onChange={e => setDifferences(e.target.checked)} className="accent-primary" />Differences only</label><p className="text-xs text-muted-foreground">{visible.length} rows · Unknown does not mean equivalent</p></div>
       <div className="overflow-x-auto border border-border"><table className="w-full min-w-[640px] bg-card text-left"><caption className="sr-only">Ownership comparison for {name(A)} and {name(B)}</caption><thead className="bg-secondary"><tr><th className="p-4 text-sm">Ownership facts</th>{[A, B].map(d => <th key={d.slug} className="w-[36%] p-4"><Link to="/devices/$slug" params={{ slug: d.slug }} className="font-display text-2xl text-primary">{name(d)}</Link></th>)}</tr></thead><tbody>{visible.map(row => <tr key={row.label} className="border-t border-border"><th scope="row" className="p-4 align-top text-xs font-medium">{row.label}</th>{row.cells.map((cell, i) => <td key={i} className="border-l border-border p-4 align-top">{cell}</td>)}</tr>)}</tbody></table></div>
-      <p className="mt-5 text-sm text-muted-foreground">Estimates use supplied, dated US prices, three annual memberships where applicable, no trial, taxes or shipping. Totals stay incomplete when device, plan or required hardware costs are unresolved. Claim-level excerpts and verification are still pending.</p><Button asChild variant="link" className="mt-4 px-0"><Link to="/devices">← Back to directory</Link></Button>
+      <p className="mt-5 text-sm text-muted-foreground">Estimates use supplied, dated US prices, three annual memberships where applicable, no trial, taxes or shipping. Totals stay incomplete when device, plan or required hardware costs are unresolved. Claim-level excerpts and verification are still pending.</p><Button asChild variant="link" className="mt-4 px-0"><Link to="/devices" search={{}}>← Back to directory</Link></Button>
     </div></>;
 }

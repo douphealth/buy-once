@@ -89,8 +89,8 @@ export const freshness = { oldest: devices.map(d => d.reviewed).sort()[0], newes
 
 export type DirectoryFilters = { q: string; cat: "all" | Device["category"]; free: boolean; offline: boolean; budget: number | undefined; sort: "name" | "cost" | "recent"; view: "grid" | "table" };
 export function parseDirectoryFilters(s: Record<string, unknown>): DirectoryFilters {
-  const budget = Number(s.budget);
-  return { q: typeof s.q === "string" ? s.q : "", cat: s.cat === "doorbell" || s.cat === "camera" || s.cat === "wearable" ? s.cat : "all", free: s.free === true || s.free === "true", offline: s.offline === true || s.offline === "true", budget: s.budget !== undefined && Number.isFinite(budget) && budget >= 0 ? budget : undefined, sort: s.sort === "cost" || s.sort === "recent" ? s.sort : "name", view: s.view === "table" ? "table" : "grid" };
+  const budget = Number(s["budget"]);
+  return { q: typeof s["q"] === "string" ? s["q"] : "", cat: s["cat"] === "doorbell" || s["cat"] === "camera" || s["cat"] === "wearable" ? s["cat"] : "all", free: s["free"] === true || s["free"] === "true", offline: s["offline"] === true || s["offline"] === "true", budget: s["budget"] !== undefined && Number.isFinite(budget) && budget >= 0 ? budget : undefined, sort: s["sort"] === "cost" || s["sort"] === "recent" ? s["sort"] : "name", view: s["view"] === "table" ? "table" : "grid" };
 }
 export function filterDevices(f: DirectoryFilters) {
   return devices.filter(d => (f.cat === "all" || d.category === f.cat) && name(d).toLowerCase().includes(f.q.toLowerCase()) && (!f.free || subscriptionFree(d)) && (!f.offline || (d.category !== "wearable" && status(d.record_without_internet) === "yes")) && (f.budget === undefined || (estimateCost(d) !== null && Number(estimateCost(d)) <= f.budget)))

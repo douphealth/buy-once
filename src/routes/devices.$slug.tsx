@@ -24,7 +24,7 @@ function DevicePage() {
   const peers = devices.filter((x) => x.category === d.category && x.slug !== d.slug).slice(0, 3);
   return (
     <article className="mx-auto max-w-5xl px-5 pt-12">
-      <Link to="/devices" className="eyebrow text-muted-foreground hover:text-primary">← Directory</Link>
+      <Link to="/devices" search={{}} className="eyebrow text-muted-foreground hover:text-primary">← Directory</Link>
       <p className="eyebrow mt-8 text-primary">{categoryLabel[d.category]} · {d.market} · imported record dated {d.reviewed}</p>
       <h1 className="font-display animate-rise mt-3 text-6xl leading-[0.95] md:text-8xl">{name(d)}</h1>
       <blockquote className="animate-rise mt-8 border-l-4 border-primary pl-5 text-xl">{d.without_plan}</blockquote>

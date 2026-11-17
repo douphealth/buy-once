@@ -20,7 +20,7 @@ export function Header() {
         </Link>
         <nav aria-label="Main navigation" className="flex max-w-full gap-1 overflow-x-auto text-sm">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} className="px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
+            <Link key={n.to} to={n.to} search={{}} className="px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background" activeProps={{ className: "bg-foreground text-background" }}>
               {n.label}
             </Link>
           ))}

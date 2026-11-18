@@ -50,6 +50,7 @@ export function Footer() {
           <a className="underline-offset-4 hover:underline" href="/data/buyonce-research.json" download>Download JSON dataset</a>
           <a className="underline-offset-4 hover:underline" href="/data/buyonce-research.csv" download>Download CSV dataset</a>
           <Link to="/methodology" className="underline-offset-4 hover:underline">How we research</Link>
+          <Link to="/privacy" className="underline-offset-4 hover:underline">Privacy policy</Link>
         </div>
       </div>
     </footer>

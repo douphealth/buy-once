@@ -14,6 +14,7 @@ import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as MethodologyRouteImport } from './routes/methodology'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as DevicesIndexRouteImport } from './routes/devices.index'
@@ -44,6 +45,11 @@ const MethodologyRoute = MethodologyRouteImport.update({
   path: '/methodology',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/devices/$slug': typeof DevicesSlugRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/devices/$slug': typeof DevicesSlugRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/devices/$slug': typeof DevicesSlugRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/llms.txt'
     | '/methodology'
+    | '/privacy'
     | '/quiz'
     | '/sitemap.xml'
     | '/devices/$slug'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/llms.txt'
     | '/methodology'
+    | '/privacy'
     | '/quiz'
     | '/sitemap.xml'
     | '/devices/$slug'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/llms.txt'
     | '/methodology'
+    | '/privacy'
     | '/quiz'
     | '/sitemap.xml'
     | '/devices/$slug'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   MethodologyRoute: typeof MethodologyRoute
+  PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   DevicesSlugRoute: typeof DevicesSlugRoute
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MethodologyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quiz': {
       id: '/quiz'
       path: '/quiz'
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   MethodologyRoute: MethodologyRoute,
+  PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   DevicesSlugRoute: DevicesSlugRoute,

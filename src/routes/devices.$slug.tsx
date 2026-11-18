@@ -4,6 +4,7 @@ import { StatusPill } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
 import { DeviceInsights } from "@/components/DeviceInsights";
+import { OfferSlot } from "@/components/OfferSlot";
 
 export const Route = createFileRoute("/devices/$slug")({
   loader: ({ params }) => { const d = getDevice(params.slug); if (!d) throw notFound(); return d; },
@@ -67,6 +68,7 @@ function DevicePage() {
         </div>
       </div>
 
+      <OfferSlot id="device-price" itemKey={d.slug} context={name(d)} />
       <DeviceInsights d={d} />
 
       {peers.length > 0 && (

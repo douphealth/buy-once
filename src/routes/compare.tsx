@@ -4,6 +4,8 @@ import { devices, getDevice, name, deviceFacts, estimateCost, extrasNote, planDe
 import { StatusPill, PageHead } from "@/components/site";
 import { Evidence } from "@/components/evidence";
 import { Button } from "@/components/ui/button";
+import { AmazonPicks } from "@/components/AmazonPicks";
+import { devicePicks } from "@/lib/picks";
 
 type S = { a?: string | undefined; b?: string | undefined };
 export const Route = createFileRoute("/compare")({
@@ -41,5 +43,7 @@ function Compare() {
       <div className="my-6 flex flex-wrap items-center justify-between gap-3"><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={differences} onChange={e => setDifferences(e.target.checked)} className="accent-primary" />Differences only</label><p className="text-xs text-muted-foreground">{visible.length} rows · Unknown does not mean equivalent</p></div>
       <div className="overflow-x-auto border border-border"><table className="w-full min-w-[640px] bg-card text-left"><caption className="sr-only">Ownership comparison for {name(A)} and {name(B)}</caption><thead className="bg-secondary"><tr><th className="p-4 text-sm">Ownership facts</th>{[A, B].map(d => <th key={d.slug} className="w-[36%] p-4"><Link to="/devices/$slug" params={{ slug: d.slug }} className="font-display text-2xl text-primary">{name(d)}</Link></th>)}</tr></thead><tbody>{visible.map(row => <tr key={row.label} className="border-t border-border"><th scope="row" className="p-4 align-top text-xs font-medium">{row.label}</th>{row.cells.map((cell, i) => <td key={i} className="border-l border-border p-4 align-top">{cell}</td>)}</tr>)}</tbody></table></div>
       <p className="mt-5 text-sm text-muted-foreground">Estimates use supplied, dated US prices, three annual memberships where applicable, no trial, taxes or shipping. Totals stay incomplete when device, plan or required hardware costs are unresolved. Claim-level excerpts and verification are still pending.</p><Button asChild variant="link" className="mt-4 px-0"><Link to="/devices" search={{ q: "", cat: "all", free: false, offline: false, budget: undefined, sort: "name", view: "grid" }}>← Back to directory</Link></Button>
-    </div></>;
+    </div>
+    <AmazonPicks title="Check current prices for both" intro="Prices change often, so we link to current listings rather than quoting a price." picks={[devicePicks(A)[0]!, devicePicks(B)[0]!].map((p, i) => ({ ...p, why: i === 0 ? `Current listings for the first device in this comparison.` : `Current listings for the second device in this comparison.` }))} />
+    </>;
 }
